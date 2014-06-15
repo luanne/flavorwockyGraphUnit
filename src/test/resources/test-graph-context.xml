@@ -1,0 +1,13 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="graphService" class="com.flavorwocky.db.ImpermanentGraphService"/>
+
+    <bean id="connectionFactory" class="com.flavorwocky.db.ConnectionFactory" scope="singleton">
+        <property name="graphService" ref="graphService"/>
+    </bean>
+
+</beans>
