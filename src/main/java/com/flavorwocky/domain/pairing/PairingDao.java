@@ -21,7 +21,7 @@ public class PairingDao {
                 "merge (i2:Ingredient {name: {ing2}}) " +
                 "with i1,i2 " +
                 "merge (i1)<-[:hasIngredient]-(p:Pairing)-[:hasIngredient]->(i2) " +
-                "on create set p.affinity={affinity} " +
+                "on create set p.affinity={affinity}, p.allAffinities=[{affinity}] " +
                 "on match set p.allAffinities=coalesce(p.allAffinities,[]) + {affinity} " +
                 "merge (i1)-[:pairsWith]-(i2)";
 
