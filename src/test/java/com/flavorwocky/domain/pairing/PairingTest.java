@@ -13,7 +13,7 @@ public class PairingTest extends BaseTest {
     @Test
     public void testSavePairing() {
 
-        Ingredient ing1 = new Ingredient("Prawns");
+        Ingredient ing1 = new Ingredient("Chicken");
         Ingredient ing2 = new Ingredient("Garlic");
         Pairing pairing = new Pairing();
         pairing.setFirstIngredient(ing1);
@@ -21,7 +21,7 @@ public class PairingTest extends BaseTest {
         pairing.setAffinity(Affinity.EXTREMELY_GOOD);
         pairing.save();
 
-        String ingredientSubgraph = "create (i1:Ingredient {name: 'Prawns'}), (i2:Ingredient {name: 'Garlic'}), (i1)<-[:hasIngredient]-(p:Pairing {affinity: 0.45, allAffinities: [0.45]}), (p)-[:hasIngredient]->(i2) merge (i1)-[:pairsWith]-(i2)";
+        String ingredientSubgraph = "create (i1:Ingredient {name: 'Chicken'}), (i2:Ingredient {name: 'Garlic'}), (i1)<-[:hasIngredient]-(p:Pairing {affinity: 0.45, allAffinities: [0.45]}), (p)-[:hasIngredient]->(i2) merge (i1)-[:pairsWith]-(i2)";
 
         GraphUnit.assertSameGraph(getGraphDb(), ingredientSubgraph);
 
