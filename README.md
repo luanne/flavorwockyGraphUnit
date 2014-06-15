@@ -1,4 +1,3 @@
-Using GraphUnit to test the state of a Neo4j database
-==============
+Simple project to demo the use of link:https://github.com/graphaware/neo4j-framework#graphaware-test[GraphUnit]
 
-Read the blog post at
+Read more at link:
