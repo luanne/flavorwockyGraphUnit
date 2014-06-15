@@ -1,3 +1,3 @@
-Simple project to demo the use of link:https://github.com/graphaware/neo4j-framework#graphaware-test[GraphUnit]
+Simple project to demo the use of [GraphUnit](https://github.com/graphaware/neo4j-framework#graphaware-test)
 
-Read more at link:
+Read more at 
