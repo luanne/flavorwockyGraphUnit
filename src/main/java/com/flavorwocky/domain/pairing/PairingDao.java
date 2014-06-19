@@ -2,12 +2,10 @@ package com.flavorwocky.domain.pairing;
 
 import com.flavorwocky.db.ConnectionFactory;
 import com.flavorwocky.exception.DbException;
-import org.neo4j.cypher.CypherException;
-import org.neo4j.cypher.javacompat.ExecutionEngine;
-import org.neo4j.graphdb.GraphDatabaseService;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  * Created by luanne on 11/06/14.
@@ -15,27 +13,23 @@ import java.util.Map;
 public class PairingDao {
 
     protected void save(Pairing pairing) throws DbException {
-        final GraphDatabaseService db = ConnectionFactory.getInstance().getDb();
 
-        final String query = "merge (i1:Ingredient {name: {ing1}}) " +
-                "merge (i2:Ingredient {name: {ing2}}) " +
+        final Connection conn = ConnectionFactory.getInstance().getServerConnection();
+        final String query = "merge (i1:Ingredient {name: {1}}) " +
+                "merge (i2:Ingredient {name: {2}}) " +
                 "with i1,i2 " +
                 "merge (i1)<-[:hasIngredient]-(p:Pairing)-[:hasIngredient]->(i2) " +
-                "on create set p.affinity={affinity}, p.allAffinities=[{affinity}] " +
-                "on match set p.allAffinities=coalesce(p.allAffinities,[]) + {affinity} " +
+                "on create set p.affinity={3}, p.allAffinities=[{3}] " +
+                "on match set p.allAffinities=coalesce(p.allAffinities,[]) + {3} " +
                 "merge (i1)-[:pairsWith]-(i2)";
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("ing1", pairing.getFirstIngredient().getName());
-        params.put("ing2", pairing.getSecondIngredient().getName());
-        params.put("affinity", pairing.getAffinity().getWeight());
-
-        ExecutionEngine engine = new ExecutionEngine(db);
-        try {
-            engine.execute(query, params);
-        } catch (CypherException ce) {
-            throw new DbException("Error saving pairing", ce);
+        try (PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setString(1, pairing.getFirstIngredient().getName());
+            ps.setString(2, pairing.getSecondIngredient().getName());
+            ps.setDouble(3, pairing.getAffinity().getWeight());
+            ps.execute();
+        } catch (SQLException sqle) {
+            throw new DbException("Error saving pairing " + pairing.getFirstIngredient().getName() + ", " + pairing.getSecondIngredient().getName(), sqle);
         }
-
     }
 }

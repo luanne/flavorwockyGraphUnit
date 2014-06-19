@@ -23,7 +23,7 @@ public class Main {
         pairing.setAffinity(Affinity.TRIED_TESTED);
         pairing.save();
 
-        ConnectionFactory.getInstance().shutdownDb();
+        ConnectionFactory.getInstance().closeServerConnection();
 
     }
 }

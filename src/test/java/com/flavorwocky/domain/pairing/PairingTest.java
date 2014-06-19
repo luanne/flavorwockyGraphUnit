@@ -2,13 +2,18 @@ package com.flavorwocky.domain.pairing;
 
 import com.flavorwocky.BaseTest;
 import com.flavorwocky.domain.ingredient.Ingredient;
-import com.graphaware.test.unit.GraphUnit;
 import org.junit.Test;
+
+import java.io.IOException;
 
 /**
  * Created by luanne on 11/06/14.
  */
 public class PairingTest extends BaseTest {
+
+
+    public PairingTest() throws IOException {
+    }
 
     @Test
     public void testSaveFirstPairing() {
@@ -25,7 +30,7 @@ public class PairingTest extends BaseTest {
 
         String ingredientSubgraph = "create (i1:Ingredient {name: 'Chicken'}), (i2:Ingredient {name: 'Garlic'}), (i1)<-[:hasIngredient]-(p:Pairing {affinity: 0.45, allAffinities: [0.45]}), (p)-[:hasIngredient]->(i2) merge (i1)-[:pairsWith]-(i2)";
 
-        GraphUnit.assertSameGraph(getGraphDb(), ingredientSubgraph);
+        assertSamegraph(ingredientSubgraph);
 
     }
 
@@ -44,7 +49,7 @@ public class PairingTest extends BaseTest {
                 "(i2)<-[:hasIngredient]-(p2:Pairing {affinity: 0.45, allAffinities:[0.45]})-[:hasIngredient]->(i3) " +
                 " merge (i1)-[:pairsWith]-(i2) merge (i3)-[:pairsWith]-(i2)";
 
-        GraphUnit.assertSameGraph(getGraphDb(), ingredientSubgraph);
+        assertSamegraph(ingredientSubgraph);
 
 
     }
@@ -61,7 +66,7 @@ public class PairingTest extends BaseTest {
 
         String ingredientSubgraph = "create (i1:Ingredient {name: 'Lemon'}), (i2:Ingredient {name: 'Garlic'}), (i1)<-[:hasIngredient]-(p:Pairing {affinity: 0.6, allAffinities:[0.6,0.45]}), (p)-[:hasIngredient]->(i2) merge (i1)-[:pairsWith]-(i2)";
 
-        GraphUnit.assertSubgraph(getGraphDb(), ingredientSubgraph);
+        assertSubgraph(ingredientSubgraph);
 
     }
 
